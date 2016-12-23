@@ -1,0 +1,31 @@
+(ns r-book.recom-algs)
+
+;; Here we define various methods to calculate the distance between to entities
+(defn- in? [coll el]
+  "True if 'el' is contained in coll"
+  (some #(= el %) coll))
+
+
+(defn euclidean-distance-score [prefs ent1 ent2]
+  "Calculate the euclidean distance between 2 entities in a 'prefs' space. 
+   There is one dimension per 'element' in common in this space and the position of each entity is given by the score of each element in their respective dimensions. 
+   prefs => {:entityname {:element1 score :element2 score}
+             :entityname2 ...}
+   ent1 & ent2 => strings or keyword representing entities"
+  (let [prf1    ((keyword ent1) prefs)
+        keys1   (keys prf1)
+        prf2    ((keyword ent2) prefs)
+        keys2   (keys prf2)
+        kcommon (filter #(in? keys1 %) keys2)
+        pow2    #(Math/pow % 2)]
+    (if (zero? (count kcommon))
+      0 ; nothing in common
+      (->> kcommon
+       (map (fn [k]
+              (-> (- (k prf1) (k prf2)) ;get difference of values
+                  pow2))) ; square the value
+       (apply +) ; sum everything up
+       (+ 1)
+       (/ 1))))) 
+
+
