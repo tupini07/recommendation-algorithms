@@ -25,11 +25,11 @@
     (if (zero? n-common)
       0 ; ent1 and ent2 have nothing in common so we short-circuit
       (let [apply-map (fn [fj mf] (apply fj (map mf kcommon)))
-            sum1   (apply-map + #(% prf1)) ; sum of all ent1's preferences
-            sum2   (apply-map + #(% prf2))
-            sum1sq (apply-map + #(pow2 (% prf1))) ; sum of the square of ent1's preferences
-            sum2sq (apply-map + #(pow2 (% prf2)))
-            p-sum  (apply-map + #(* (% prf1) (% prf2))) ; sum of the products of ent1's and ent2's preferences
+            sum1   (apply-map + #(prf1 %)) ; sum of all ent1's preferences
+            sum2   (apply-map + #(prf2 %))
+            sum1sq (apply-map + #(pow2 (prf1 %))) ; sum of the square of ent1's preferences
+            sum2sq (apply-map + #(pow2 (prf2 %)))
+            p-sum  (apply-map + #(* (prf1 %) (prf2 %))) ; sum of the products of ent1's and ent2's preferences
             ; Calculate pearson score
             numer  (- p-sum (/ (* sum1 sum2) n-common))
             denom  (Math/sqrt (* 
@@ -57,8 +57,8 @@
       0 ; nothing in common
       (->> kcommon
            (map (fn [k]
-                  (-> (- (k prf1) 
-                         (k prf2)) ;get difference of values
+                  (-> (- (prf1 k) 
+                         (prf2 k)) ;get difference of values
                       pow2))) ; square the value
            (apply +) ; sum everything up
            (+ 1)
