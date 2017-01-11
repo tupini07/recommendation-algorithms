@@ -1,6 +1,11 @@
 ;; Taken from https://github.com/cgroza/goodreads-clj
 ;; and modified a bit
 
+;; For the moment this file is not used since Goodreads doesn't let you get a list of ratings
+;; for a specific book, so it is no use for this project. However, this wrapper is pretty useful
+;; and someday I'll move it somwhere else and keep working on it.
+;; .... someday .....
+
 (ns r-book.wrapper
    (:require [clj-http.client :as http]
              [clojure.string :as string]
@@ -11,8 +16,8 @@
    (:import [java.net URLEncoder]))
 
 ;; Developers authentication
-(def dev-key "6R18lb4Kdymg0f2bmAAckg")
-(def secret "QzL28tUoXtRSoFcMiaNleBoP7WfPMw8nQU77STWdETg")
+(def dev-key "26R18lb4Kdymg0f2bmAAckg")
+(def secret "4QzL28tUoXtRSoFcMiaNleBoP7WfPMw8nQU77STWdETg")
 
 ;; Goodreads API URLs
 (def root-url "https://www.goodreads.com")
