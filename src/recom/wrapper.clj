@@ -17,7 +17,7 @@
 
 ;; Developers authentication
 (def dev-key "")
-(def secret "")
+(def secret "") 
 
 ;; Goodreads API URLs
 (def root-url "https://www.goodreads.com")
