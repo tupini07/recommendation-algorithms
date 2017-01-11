@@ -8,21 +8,40 @@
 (def pow2  #(Math/pow % 2))
 
 (defn- deconstruct-p-ee [prefs ent1 ent2]
-  (let [prf1    ((keyword ent1) prefs)
-        keys1   (keys prf1)
+  (let [prf1    ((keyword ent1) prefs) ; which are the preferences of ent1?
+        keys1   (keys prf1)            ; on which preference ent1 has specified a value?
         prf2    ((keyword ent2) prefs)
         keys2   (keys prf2)
-        kcommon (filter #(in? keys1 %) keys2)]
+        kcommon (filter #(in? keys1 %) keys2)] ; the preference for which both ent1 and ent2 have declared a value
     [prf1 keys1 prf2 keys2 kcommon]))
 
 
 (defn pearson-correlation-score [prefs ent1 ent2]
-  "Returns the Pearson correlation coeficient for ent1 and ent2"
+  "Returns the Pearson correlation coeficient for ent1 and ent2. It returns a value between -1 and 1 where -1 is nothing in common and 1 means exactly the same"
   (let [[prf1 keys1 
          prf2 keys2 
-         kcommon] (deconstruct-p-ee prefs ent1 ent2)]
-    
-    ))
+         kcommon] (deconstruct-p-ee prefs ent1 ent2)
+        n-common (count kcommon)]
+    (if (zero? n-common)
+      0 ; ent1 and ent2 have nothing in common so we short-circuit
+      (let [apply-map (fn [fj mf] (apply fj (map mf kcommon)))
+            sum1   (apply-map + #(% prf1)) ; sum of all ent1's preferences
+            sum2   (apply-map + #(% prf2))
+            sum1sq (apply-map + #(pow2 (% prf1))) ; sum of the square of ent1's preferences
+            sum2sq (apply-map + #(pow2 (% prf2)))
+            p-sum  (apply-map + #(* (% prf1) (% prf2))) ; sum of the products of ent1's and ent2's preferences
+            ; Calculate pearson score
+            numer  (- p-sum (/ (* sum1 sum2) n-common))
+            denom  (Math/sqrt (* 
+                               (- sum1sq 
+                                  (/ (pow2 sum1)
+                                     n-common))
+                               (- sum2sq
+                                  (/ (pow2 sum2)
+                                     n-common))))]
+        (if (zero? denom)
+          0
+          (/ numer denom))))))
 
 (defn euclidean-distance-score [prefs ent1 ent2]
   "Calculate the euclidean distance between 2 entities in a 'prefs' space. 
