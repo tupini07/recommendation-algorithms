@@ -1,4 +1,4 @@
-(ns r-book.apimock)
+(ns recom.apimock)
 
 ;ratings go from 0 to 100 and are ints
 (def db {

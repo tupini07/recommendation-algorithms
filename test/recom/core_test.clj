@@ -1,4 +1,4 @@
-(ns r-book.core-test
+(ns recom.core-test
   (:require [clojure.test :refer :all]
             [r-book.core :refer :all]))
 

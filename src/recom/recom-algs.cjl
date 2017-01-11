@@ -1,4 +1,4 @@
-(ns r-book.recom-algs)
+(ns recom.recom-algs)
 
 ;; Here we define various methods to calculate the distance between to entities
 (defn- in? [coll el]

@@ -6,7 +6,7 @@
 ;; and someday I'll move it somwhere else and keep working on it.
 ;; .... someday .....
 
-(ns r-book.wrapper
+(ns recom.wrapper
    (:require [clj-http.client :as http]
              [clojure.string :as string]
              [clojure.xml :as xml]
@@ -16,8 +16,8 @@
    (:import [java.net URLEncoder]))
 
 ;; Developers authentication
-(def dev-key "26R18lb4Kdymg0f2bmAAckg")
-(def secret "4QzL28tUoXtRSoFcMiaNleBoP7WfPMw8nQU77STWdETg")
+(def dev-key "")
+(def secret "")
 
 ;; Goodreads API URLs
 (def root-url "https://www.goodreads.com")
@@ -208,18 +208,18 @@
          (map #(let [{rc :content} %
                      book-el (get-tag rc :book)
                      rat-el (get-tag rc :rating)]
-                 
+
                  {:book-id (-> book-el
                                (get-tag :id))
-                  
+
                   :isbn    (-> book-el
                                (get-tag :isbn))
-                  
+
                   :isbn13  (-> book-el
                                (get-tag :isbn13))
-                  
+
                   :title   (-> book-el
                                (get-tag :title))
-                  
+
                   :rating  (-> rat-el
                                read-string)}))))) ;make an int

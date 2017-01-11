@@ -1,4 +1,4 @@
-(ns r-book.core
+(ns recom.core
   (:require [r-book.apimock :refer :all]
             [r-book.recom-algs :as algs])
   (:gen-class))
@@ -11,4 +11,6 @@
   (algs/pearson-correlation-score db "john" "carl")
   (algs/euclidean-distance-score db "john" "carl")
   (algs/pearson-correlation-score db :john :alys)
+
+
   )
